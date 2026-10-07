@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block title %}Login | LearnLens{% endblock %}
+
+{% block content %}
+
+<style>
+
+.auth-page {
+    background: #f7f9fc;
+    min-height: 100vh;
+    padding: 60px 6%;
+}
+
+.auth-wrapper {
+    max-width: 1050px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: white;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+}
+
+.auth-info {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+    color: white;
+    padding: 50px;
+}
+
+.small-tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+}
+
+.auth-info h2 {
+    font-size: 34px;
+    margin-bottom: 18px;
+}
+
+.auth-info p {
+    line-height: 1.7;
+    opacity: 0.9;
+}
+
+.auth-benefits {
+    margin-top: 30px;
+}
+
+.auth-benefit {
+    margin: 18px 0;
+}
+
+.auth-check {
+    display: inline-flex;
+    width: 25px;
+    height: 25px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.auth-form {
+    padding: 50px;
+}
+
+.auth-form h1 {
+    margin: 0;
+    color: #111827;
+}
+
+.auth-form > p {
+    color: #6b7280;
+    margin-bottom: 28px;
+}
+
+.message {
+    padding: 13px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.message.error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.message.success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.login-type {
+    margin-bottom: 22px;
+}
+
+.login-type-title {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #374151;
+}
+
+.radio-options {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-option {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    padding: 13px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.radio-option input {
+    margin-right: 7px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.form-group input {
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.auth-submit {
+    width: 100%;
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 14px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.auth-submit:hover {
+    background: #1d4ed8;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 22px;
+    color: #6b7280;
+}
+
+.auth-switch a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+@media (max-width: 800px) {
+
+    .auth-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-info {
+        padding: 35px;
+    }
+
+    .auth-form {
+        padding: 35px;
+    }
+
+}
+
+</style>
+
+
+<section class="auth-page">
+
+    <div class="auth-wrapper">
+
+        <div class="auth-info">
+
+            <div class="small-tag">
+                LEARNLENS STUDENT INTELLIGENCE
+            </div>
+
+            <h2>
+                Welcome Back to LearnLens
+            </h2>
+
+            <p>
+                Login to access your LearnLens account and
+                explore student performance insights,
+                predictions and academic analysis.
+            </p>
+
+
+            <div class="auth-benefits">
+
+                <div class="auth-benefit">
+                    <span class="auth-check">✓</span>
+                    Student Performance Prediction
+                </div>
+
+                <div class="auth-benefit">
+                    <span class="auth-check">✓</span>
+                    Academic Performance Analysis
+                </div>
+
+                <div class="auth-benefit">
+                    <span class="auth-check">✓</span>
+                    Personalized Student Dashboard
+                </div>
+
+                <div class="auth-benefit">
+                    <span class="auth-check">✓</span>
+                    Secure Account Access
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-form">
+
+            <h1>Login</h1>
+
+            <p>
+                Enter your username and password to continue.
+            </p>
+
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <form method="post">
+
+                {% csrf_token %}
+
+
+                <div class="login-type">
+
+                    <label class="login-type-title">
+                        Login As
+                    </label>
+
+
+                    <div class="radio-options">
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="login_type"
+                                value="student"
+                                checked
+                            >
+
+                            Student
+
+                        </label>
+
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="login_type"
+                                value="admin"
+                            >
+
+                            Admin
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter your username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                >
+                    Login to LearnLens →
+                </button>
+
+            </form>
+
+
+            <div class="auth-switch">
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}">
+                    Register Now
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

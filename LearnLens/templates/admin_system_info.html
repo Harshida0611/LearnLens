@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}System Information | LearnLens Admin{% endblock %}
+
+{% block content %}
+
+<section class="system-page">
+
+    <div class="system-container">
+
+        <div class="page-header">
+
+            <div>
+
+                <span>SYSTEM INFORMATION</span>
+
+                <h1>
+                    LearnLens System
+                </h1>
+
+                <p>
+                    Technical information about the
+                    LearnLens application.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'admin_dashboard' %}"
+                class="back-btn"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="system-card">
+
+            <div class="system-status">
+                <span></span>
+                {{ system_status }}
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-item">
+                    <span>PROJECT NAME</span>
+                    <strong>{{ project_name }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>PROJECT TYPE</span>
+                    <strong>{{ project_type }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>DJANGO VERSION</span>
+                    <strong>{{ django_version }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>DATABASE</span>
+                    <strong>{{ database }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>AUTHENTICATION</span>
+                    <strong>{{ authentication }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>STUDENT MODEL</span>
+                    <strong>{{ student_model }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>PREDICTION MODEL</span>
+                    <strong>{{ prediction_model }}</strong>
+                </div>
+
+                <div class="info-item">
+                    <span>ADMIN MODEL</span>
+                    <strong>{{ admin_model }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="security-card">
+
+            <div class="security-icon">
+                🔐
+            </div>
+
+            <div>
+
+                <h2>
+                    Secure Authentication
+                </h2>
+
+                <p>
+                    LearnLens uses Django's authentication
+                    system for secure username and password
+                    authentication. Student and administrator
+                    accounts are separated using profile models.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+
+.system-page {
+    min-height: 650px;
+    padding: 60px 20px;
+    background: #f7f9fc;
+}
+
+.system-container {
+    max-width: 1050px;
+    margin: auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.page-header span {
+    color: #7c3aed;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.page-header h1 {
+    color: #111827;
+    font-size: 30px;
+    margin: 8px 0;
+}
+
+.page-header p {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.back-btn {
+    background: white;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+    padding: 11px 17px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.system-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(15,23,42,.05);
+}
+
+.system-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.system-status span {
+    width: 7px;
+    height: 7px;
+    background: #16a34a;
+    border-radius: 50%;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    background: #f8faff;
+    padding: 20px;
+    border-radius: 11px;
+}
+
+.info-item span {
+    display: block;
+    color: #9ca3af;
+    font-size: 9px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+.info-item strong {
+    color: #111827;
+    font-size: 12px;
+}
+
+.security-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 22px;
+}
+
+.security-icon {
+    font-size: 25px;
+}
+
+.security-card h2 {
+    color: #1e3a8a;
+    font-size: 18px;
+    margin-bottom: 7px;
+}
+
+.security-card p {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+{% endblock %}

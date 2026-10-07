@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Performance Prediction | LearnLens{% endblock %}
+
+{% block content %}
+
+<style>
+
+.prediction-page {
+    background: #f7f9fc;
+    min-height: 100vh;
+    padding: 45px 6%;
+}
+
+.prediction-header {
+    margin-bottom: 30px;
+}
+
+.prediction-header h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 34px;
+}
+
+.prediction-header p {
+    color: #6b7280;
+    margin-top: 8px;
+}
+
+.prediction-card {
+    max-width: 850px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.info-box {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    padding: 16px;
+    border-radius: 8px;
+    color: #374151;
+    margin-bottom: 25px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-group input {
+    padding: 13px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #2563eb;
+}
+
+.form-help {
+    color: #9ca3af;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.message {
+    padding: 13px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.message.error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.message.success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.button-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.submit-btn {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.back-btn {
+    text-decoration: none;
+    background: #f3f4f6;
+    color: #374151;
+    padding: 14px 24px;
+    border-radius: 9px;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+
+<section class="prediction-page">
+
+    <div class="prediction-header">
+
+        <h1>Performance Prediction</h1>
+
+        <p>
+            Enter your academic information to generate
+            your LearnLens performance prediction.
+        </p>
+
+    </div>
+
+
+    <div class="prediction-card">
+
+        <div class="info-box">
+
+            LearnLens analyzes your attendance, study hours,
+            previous marks, assignment score and test score
+            to calculate your predicted performance.
+
+        </div>
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Attendance (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="attendance"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        placeholder="Example: 92"
+                        required
+                    >
+
+                    <span class="form-help">
+                        Enter a value between 0 and 100.
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Study Hours
+                    </label>
+
+                    <input
+                        type="number"
+                        name="study_hours"
+                        min="0"
+                        step="0.1"
+                        placeholder="Example: 5.5"
+                        required
+                    >
+
+                    <span class="form-help">
+                        Enter your average daily study hours.
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Previous Marks (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="previous_marks"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        placeholder="Example: 82"
+                        required
+                    >
+
+                    <span class="form-help">
+                        Enter your previous academic marks.
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Assignment Score (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="assignment_score"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        placeholder="Example: 78"
+                        required
+                    >
+
+                    <span class="form-help">
+                        Enter your average assignment score.
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Test Score (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="test_score"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        placeholder="Example: 85"
+                        required
+                    >
+
+                    <span class="form-help">
+                        Enter your average test score.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    Generate Prediction →
+                </button>
+
+                <a
+                    href="{% url 'student_dashboard' %}"
+                    class="back-btn"
+                >
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,500 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | LearnLens{% endblock %}
+
+{% block content %}
+
+<section class="admin-dashboard-page">
+
+    <div class="admin-container">
+
+        <!-- HEADER -->
+
+        <div class="admin-dashboard-header">
+
+            <div>
+
+                <span class="admin-tag">
+                    LEARNLENS ADMINISTRATION
+                </span>
+
+                <h1>
+                    Admin Dashboard
+                </h1>
+
+                <p>
+                    Manage students, predictions, analytics and
+                    LearnLens system information.
+                </p>
+
+            </div>
+
+            <a href="{% url 'logout' %}" class="admin-logout">
+                Logout
+            </a>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+
+        <div class="admin-stats">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-icon">
+                    👨‍🎓
+                </div>
+
+                <div>
+                    <span>TOTAL STUDENTS</span>
+                    <strong>{{ total_students }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-icon">
+                    📊
+                </div>
+
+                <div>
+                    <span>TOTAL PREDICTIONS</span>
+                    <strong>{{ total_predictions }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-icon">
+                    🤖
+                </div>
+
+                <div>
+                    <span>ML SYSTEM</span>
+                    <strong>{{ ml_status }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-icon">
+                    🔐
+                </div>
+
+                <div>
+                    <span>SYSTEM STATUS</span>
+                    <strong>{{ system_status }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MANAGEMENT -->
+
+        <div class="admin-section">
+
+            <div class="admin-section-heading">
+
+                <span>ADMINISTRATION</span>
+
+                <h2>
+                    System Management
+                </h2>
+
+            </div>
+
+
+            <div class="admin-management-grid">
+
+
+                <!-- STUDENTS -->
+
+                <div class="admin-management-card">
+
+                    <div class="admin-management-icon">
+                        👨‍🎓
+                    </div>
+
+                    <h3>
+                        Student Management
+                    </h3>
+
+                    <p>
+                        View all registered students, usernames,
+                        emails, courses and registration dates.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_students' %}"
+                        class="admin-action-btn"
+                    >
+                        Manage Students →
+                    </a>
+
+                </div>
+
+
+                <!-- PREDICTIONS -->
+
+                <div class="admin-management-card">
+
+                    <div class="admin-management-icon">
+                        📈
+                    </div>
+
+                    <h3>
+                        Prediction Management
+                    </h3>
+
+                    <p>
+                        View student prediction records and
+                        performance prediction results.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_predictions' %}"
+                        class="admin-action-btn"
+                    >
+                        View Predictions →
+                    </a>
+
+                </div>
+
+
+                <!-- ANALYTICS -->
+
+                <div class="admin-management-card">
+
+                    <div class="admin-management-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Performance Analytics
+                    </h3>
+
+                    <p>
+                        Analyze average performance, attendance,
+                        scores and performance categories.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_analytics' %}"
+                        class="admin-action-btn"
+                    >
+                        View Analytics →
+                    </a>
+
+                </div>
+
+
+                <!-- ML MODEL -->
+
+                <div class="admin-management-card">
+
+                    <div class="admin-management-icon">
+                        🤖
+                    </div>
+
+                    <h3>
+                        ML Model
+                    </h3>
+
+                    <p>
+                        View the current prediction model,
+                        input features and prediction output.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_ml_model' %}"
+                        class="admin-action-btn"
+                    >
+                        View ML Model →
+                    </a>
+
+                </div>
+
+
+                <!-- REPORTS -->
+
+                <div class="admin-management-card">
+
+                    <div class="admin-management-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        Reports
+                    </h3>
+
+                    <p>
+                        View prediction reports and download
+                        student performance data as CSV.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_reports' %}"
+                        class="admin-action-btn"
+                    >
+                        View Reports →
+                    </a>
+
+                </div>
+
+
+                <!-- SYSTEM -->
+
+                <div class="admin-management-card">
+
+                    <div class="admin-management-icon">
+                        ⚙️
+                    </div>
+
+                    <h3>
+                        System Information
+                    </h3>
+
+                    <p>
+                        View LearnLens project, database,
+                        authentication and system information.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_system_info' %}"
+                        class="admin-action-btn"
+                    >
+                        System Information →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+
+.admin-dashboard-page {
+    min-height: 650px;
+    padding: 60px 20px;
+    background: #f7f9fc;
+}
+
+.admin-container {
+    max-width: 1180px;
+    margin: auto;
+}
+
+.admin-dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.admin-tag {
+    display: inline-block;
+    padding: 7px 13px;
+    border-radius: 30px;
+    background: #f3e8ff;
+    color: #7c3aed;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.admin-dashboard-header h1 {
+    font-size: 34px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: #111827;
+}
+
+.admin-dashboard-header p {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.admin-logout {
+    padding: 11px 20px;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 45px;
+}
+
+.admin-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #ffffff;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.admin-stat-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    border-radius: 11px;
+    font-size: 20px;
+}
+
+.admin-stat-card span {
+    display: block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    color: #9ca3af;
+    margin-bottom: 5px;
+}
+
+.admin-stat-card strong {
+    display: block;
+    font-size: 20px;
+    color: #111827;
+}
+
+.admin-section {
+    margin-top: 10px;
+}
+
+.admin-section-heading {
+    margin-bottom: 20px;
+}
+
+.admin-section-heading > span {
+    color: #7c3aed;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.admin-section-heading h2 {
+    font-size: 25px;
+    margin-top: 7px;
+    color: #111827;
+}
+
+.admin-management-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.admin-management-card {
+    background: #ffffff;
+    padding: 27px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    transition: 0.3s;
+}
+
+.admin-management-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.09);
+}
+
+.admin-management-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    border-radius: 12px;
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.admin-management-card h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.admin-management-card p {
+    color: #6b7280;
+    font-size: 12px;
+    line-height: 1.7;
+    min-height: 42px;
+}
+
+.admin-action-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 17px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-action-btn:hover {
+    background: #2563eb;
+    color: white;
+}
+
+@media (max-width: 900px) {
+
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-management-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .admin-dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-management-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+{% endblock %}

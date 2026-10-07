@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction History | LearnLens{% endblock %}
+
+{% block content %}
+
+<style>
+
+.history-page {
+    background: #f7f9fc;
+    min-height: 100vh;
+    padding: 45px 6%;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.history-header h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 34px;
+}
+
+.history-header p {
+    color: #6b7280;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.primary-btn,
+.secondary-btn {
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 9px;
+    font-weight: 600;
+}
+
+.primary-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.secondary-btn {
+    background: #111827;
+    color: white;
+}
+
+.history-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.total-box {
+    margin-bottom: 20px;
+    color: #6b7280;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.history-table th {
+    background: #f8fafc;
+    padding: 15px;
+    text-align: left;
+    color: #374151;
+}
+
+.history-table td {
+    padding: 15px;
+    border-top: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.score {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.category {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.empty-box {
+    text-align: center;
+    padding: 50px;
+}
+
+.empty-box p {
+    color: #6b7280;
+}
+
+@media (max-width: 700px) {
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-buttons {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+
+<section class="history-page">
+
+    <div class="history-header">
+
+        <div>
+
+            <h1>Prediction History</h1>
+
+            <p>
+                View all your previous LearnLens performance predictions.
+            </p>
+
+        </div>
+
+
+        <div class="header-buttons">
+
+            <a
+                href="{% url 'student_prediction' %}"
+                class="primary-btn"
+            >
+                New Prediction
+            </a>
+
+            <a
+                href="{% url 'student_download_report' %}"
+                class="secondary-btn"
+            >
+                Download CSV
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="history-card">
+
+        <div class="total-box">
+
+            Total Predictions:
+            <strong>{{ total_predictions }}</strong>
+
+        </div>
+
+
+        {% if predictions %}
+
+        <div class="table-wrapper">
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Attendance</th>
+                        <th>Study Hours</th>
+                        <th>Previous Marks</th>
+                        <th>Assignment</th>
+                        <th>Test</th>
+                        <th>Prediction</th>
+                        <th>Performance</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for prediction in predictions %}
+
+                    <tr>
+
+                        <td>
+                            {{ prediction.created_at|date:"d M Y, H:i" }}
+                        </td>
+
+                        <td>
+                            {{ prediction.attendance }}%
+                        </td>
+
+                        <td>
+                            {{ prediction.study_hours }}
+                        </td>
+
+                        <td>
+                            {{ prediction.previous_marks }}%
+                        </td>
+
+                        <td>
+                            {{ prediction.assignment_score }}%
+                        </td>
+
+                        <td>
+                            {{ prediction.test_score }}%
+                        </td>
+
+                        <td class="score">
+                            {{ prediction.predicted_score }}%
+                        </td>
+
+                        <td>
+
+                            <span class="category">
+                                {{ prediction.performance_category }}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-box">
+
+            <h2>No Prediction History</h2>
+
+            <p>
+                You have not generated any prediction yet.
+            </p>
+
+            <a
+                href="{% url 'student_prediction' %}"
+                class="primary-btn"
+            >
+                Generate Prediction
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

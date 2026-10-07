@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}Performance Analysis | LearnLens{% endblock %}
+
+{% block content %}
+
+<style>
+
+.analysis-page {
+    background: #f7f9fc;
+    min-height: 100vh;
+    padding: 45px 6%;
+}
+
+.analysis-header {
+    margin-bottom: 30px;
+}
+
+.analysis-header h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 34px;
+}
+
+.analysis-header p {
+    color: #6b7280;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.result-card {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.result-card h3 {
+    margin-top: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.big-score {
+    font-size: 48px;
+    font-weight: 800;
+    color: #2563eb;
+}
+
+.category {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #15803d;
+    font-weight: 600;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.metric-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.metric-card h3 {
+    margin: 0;
+    font-size: 25px;
+    color: #2563eb;
+}
+
+.metric-card p {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.empty-box {
+    background: white;
+    text-align: center;
+    padding: 60px 30px;
+    border-radius: 18px;
+}
+
+.primary-btn {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    padding: 13px 22px;
+    border-radius: 9px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+@media (max-width: 1000px) {
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+
+<section class="analysis-page">
+
+    <div class="analysis-header">
+
+        <h1>Performance Analysis</h1>
+
+        <p>
+            Understand your academic performance using
+            your LearnLens prediction data.
+        </p>
+
+    </div>
+
+
+    {% if latest_prediction %}
+
+    <div class="result-grid">
+
+        <div class="result-card">
+
+            <h3>Latest Predicted Performance</h3>
+
+            <div class="big-score">
+                {{ latest_prediction.predicted_score }}%
+            </div>
+
+            <span class="category">
+                {{ latest_prediction.performance_category }}
+            </span>
+
+        </div>
+
+
+        <div class="result-card">
+
+            <h3>Prediction Date</h3>
+
+            <p>
+                {{ latest_prediction.created_at|date:"d M Y, H:i" }}
+            </p>
+
+            <h3>Number of Predictions</h3>
+
+            <p>
+                {{ total_predictions }}
+            </p>
+
+        </div>
+
+
+        <div class="result-card">
+
+            <h3>Latest Test Score</h3>
+
+            <div class="big-score">
+                {{ latest_prediction.test_score }}%
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h2>Overall Performance Averages</h2>
+
+    <div class="metrics-grid">
+
+        <div class="metric-card">
+
+            <h3>
+                {% if averages.avg_attendance %}
+                    {{ averages.avg_attendance|floatformat:2 }}%
+                {% else %}
+                    0%
+                {% endif %}
+            </h3>
+
+            <p>Average Attendance</p>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <h3>
+                {% if averages.avg_study_hours %}
+                    {{ averages.avg_study_hours|floatformat:2 }}
+                {% else %}
+                    0
+                {% endif %}
+            </h3>
+
+            <p>Average Study Hours</p>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <h3>
+                {% if averages.avg_previous_marks %}
+                    {{ averages.avg_previous_marks|floatformat:2 }}%
+                {% else %}
+                    0%
+                {% endif %}
+            </h3>
+
+            <p>Previous Marks</p>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <h3>
+                {% if averages.avg_assignment_score %}
+                    {{ averages.avg_assignment_score|floatformat:2 }}%
+                {% else %}
+                    0%
+                {% endif %}
+            </h3>
+
+            <p>Assignment Score</p>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <h3>
+                {% if averages.avg_test_score %}
+                    {{ averages.avg_test_score|floatformat:2 }}%
+                {% else %}
+                    0%
+                {% endif %}
+            </h3>
+
+            <p>Test Score</p>
+
+        </div>
+
+    </div>
+
+
+    <div class="result-card">
+
+        <h2>Average Predicted Performance</h2>
+
+        <div class="big-score">
+
+            {% if averages.avg_predicted_score %}
+                {{ averages.avg_predicted_score|floatformat:2 }}%
+            {% else %}
+                0%
+            {% endif %}
+
+        </div>
+
+        <p>
+            This represents your average predicted performance
+            across all completed predictions.
+        </p>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-box">
+
+        <h2>No Analysis Available</h2>
+
+        <p>
+            You have not generated any performance prediction yet.
+        </p>
+
+        <a
+            href="{% url 'student_prediction' %}"
+            class="primary-btn"
+        >
+            Generate Your First Prediction →
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+    <a
+        href="{% url 'student_dashboard' %}"
+        class="back-btn"
+    >
+        ← Back to Dashboard
+    </a>
+
+</section>
+
+{% endblock %}

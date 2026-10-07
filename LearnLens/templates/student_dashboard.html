@@ -1,0 +1,599 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard | LearnLens{% endblock %}
+
+{% block content %}
+
+<style>
+
+.dashboard-page {
+    background: #f7f9fc;
+    min-height: 100vh;
+    padding: 45px 6%;
+}
+
+.dashboard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.dashboard-top h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 34px;
+}
+
+.dashboard-top p {
+    margin-top: 8px;
+    color: #6b7280;
+}
+
+.logout-btn {
+    text-decoration: none;
+    background: #111827;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.logout-btn:hover {
+    background: #2563eb;
+}
+
+.welcome-card {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+    color: white;
+    padding: 35px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.welcome-card h2 {
+    margin: 0 0 10px;
+    font-size: 28px;
+}
+
+.welcome-card p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.stat-card h3 {
+    margin: 0;
+    font-size: 30px;
+    color: #2563eb;
+}
+
+.stat-card p {
+    color: #6b7280;
+    margin: 8px 0 0;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.action-card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #111827;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    transition: 0.25s;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+}
+
+.action-icon {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.action-card h3 {
+    margin: 0 0 8px;
+}
+
+.action-card p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.section-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    margin-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #111827;
+}
+
+.view-link {
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.latest-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.latest-score {
+    background: #f0f7ff;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.latest-score h3 {
+    margin: 0;
+    color: #2563eb;
+    font-size: 38px;
+}
+
+.latest-score p {
+    color: #6b7280;
+}
+
+.performance-badge {
+    display: inline-block;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.prediction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.prediction-table th {
+    background: #f8fafc;
+    color: #374151;
+    text-align: left;
+    padding: 14px;
+    font-size: 14px;
+}
+
+.prediction-table td {
+    padding: 14px;
+    border-top: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 45px;
+}
+
+.empty-state h3 {
+    color: #111827;
+}
+
+.empty-state p {
+    color: #6b7280;
+}
+
+.primary-btn {
+    display: inline-block;
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+@media (max-width: 1000px) {
+
+    .stats-grid,
+    .action-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .dashboard-page {
+        padding: 30px 5%;
+    }
+
+    .dashboard-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stats-grid,
+    .action-grid,
+    .latest-box {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+
+<section class="dashboard-page">
+
+    <div class="dashboard-top">
+
+        <div>
+            <h1>Student Dashboard</h1>
+
+            <p>
+                Monitor your academic performance and prediction results.
+            </p>
+        </div>
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+
+    <div class="welcome-card">
+
+        <h2>
+            Welcome,
+            {{ request.user.first_name }}
+            {{ request.user.last_name }}
+        </h2>
+
+        <p>
+            Welcome to LearnLens. Analyze your academic performance
+            and understand your predicted results.
+        </p>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>{{ total_predictions }}</h3>
+            <p>Total Predictions</p>
+        </div>
+
+        <div class="stat-card">
+            {% if latest_prediction %}
+                <h3>{{ latest_prediction.predicted_score }}%</h3>
+            {% else %}
+                <h3>--</h3>
+            {% endif %}
+            <p>Latest Prediction</p>
+        </div>
+
+        <div class="stat-card">
+
+            {% if latest_prediction %}
+                <h3>{{ latest_prediction.attendance }}%</h3>
+            {% else %}
+                <h3>--</h3>
+            {% endif %}
+
+            <p>Latest Attendance</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            {% if latest_prediction %}
+                <h3>{{ latest_prediction.test_score }}%</h3>
+            {% else %}
+                <h3>--</h3>
+            {% endif %}
+
+            <p>Latest Test Score</p>
+
+        </div>
+
+    </div>
+
+
+    <div class="action-grid">
+
+        <a
+            href="{% url 'student_prediction' %}"
+            class="action-card"
+        >
+
+            <div class="action-icon">📊</div>
+
+            <h3>Performance Prediction</h3>
+
+            <p>
+                Enter your academic information and generate
+                your performance prediction.
+            </p>
+
+        </a>
+
+
+        <a
+            href="{% url 'student_analysis' %}"
+            class="action-card"
+        >
+
+            <div class="action-icon">📈</div>
+
+            <h3>Performance Analysis</h3>
+
+            <p>
+                View your average scores and understand
+                your academic performance.
+            </p>
+
+        </a>
+
+
+        <a
+            href="{% url 'student_history' %}"
+            class="action-card"
+        >
+
+            <div class="action-icon">🕒</div>
+
+            <h3>Prediction History</h3>
+
+            <p>
+                View all your previous performance predictions.
+            </p>
+
+        </a>
+
+
+        <a
+            href="{% url 'student_profile' %}"
+            class="action-card"
+        >
+
+            <div class="action-icon">👤</div>
+
+            <h3>My Profile</h3>
+
+            <p>
+                View and update your personal student information.
+            </p>
+
+        </a>
+
+    </div>
+
+
+    {% if latest_prediction %}
+
+    <div class="section-card">
+
+        <div class="section-header">
+
+            <h2>Latest Prediction</h2>
+
+            <a
+                href="{% url 'student_analysis' %}"
+                class="view-link"
+            >
+                View Analysis →
+            </a>
+
+        </div>
+
+
+        <div class="latest-box">
+
+            <div class="latest-score">
+
+                <h3>
+                    {{ latest_prediction.predicted_score }}%
+                </h3>
+
+                <p>
+                    Predicted Performance Score
+                </p>
+
+                <span class="performance-badge">
+                    {{ latest_prediction.performance_category }}
+                </span>
+
+            </div>
+
+
+            <div class="latest-score">
+
+                <p>
+                    <strong>Attendance:</strong>
+                    {{ latest_prediction.attendance }}%
+                </p>
+
+                <p>
+                    <strong>Study Hours:</strong>
+                    {{ latest_prediction.study_hours }}
+                </p>
+
+                <p>
+                    <strong>Previous Marks:</strong>
+                    {{ latest_prediction.previous_marks }}%
+                </p>
+
+                <p>
+                    <strong>Assignment:</strong>
+                    {{ latest_prediction.assignment_score }}%
+                </p>
+
+                <p>
+                    <strong>Test:</strong>
+                    {{ latest_prediction.test_score }}%
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="section-card" id="prediction-history">
+
+        <div class="section-header">
+
+            <h2>Prediction History</h2>
+
+            <a
+                href="{% url 'student_history' %}"
+                class="view-link"
+            >
+                View All →
+            </a>
+
+        </div>
+
+
+        {% if predictions %}
+
+        <div class="table-wrapper">
+
+            <table class="prediction-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Date</th>
+                        <th>Attendance</th>
+                        <th>Study Hours</th>
+                        <th>Previous Marks</th>
+                        <th>Assignment</th>
+                        <th>Test</th>
+                        <th>Prediction</th>
+                        <th>Performance</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for prediction in predictions|slice:":5" %}
+
+                    <tr>
+
+                        <td>
+                            {{ prediction.created_at|date:"d M Y" }}
+                        </td>
+
+                        <td>
+                            {{ prediction.attendance }}%
+                        </td>
+
+                        <td>
+                            {{ prediction.study_hours }}
+                        </td>
+
+                        <td>
+                            {{ prediction.previous_marks }}%
+                        </td>
+
+                        <td>
+                            {{ prediction.assignment_score }}%
+                        </td>
+
+                        <td>
+                            {{ prediction.test_score }}%
+                        </td>
+
+                        <td>
+                            <strong>
+                                {{ prediction.predicted_score }}%
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ prediction.performance_category }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <h3>No Predictions Yet</h3>
+
+            <p>
+                Start your first performance prediction
+                to see your academic insights here.
+            </p>
+
+            <a
+                href="{% url 'student_prediction' %}"
+                class="primary-btn"
+            >
+                Start Your First Prediction →
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
