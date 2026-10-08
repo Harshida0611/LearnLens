@@ -873,20 +873,52 @@ def admin_analytics(request):
         logout(request)
         return redirect("login")
 
+    # =====================================================
+    # BASIC COUNTS
+    # =====================================================
+
     total_students = StudentProfile.objects.count()
 
     total_predictions = Prediction.objects.count()
 
+
+    # =====================================================
+    # OVERALL AVERAGES
+    # =====================================================
+
     averages = Prediction.objects.aggregate(
-        avg_predicted_score=Avg("predicted_score"),
-        avg_attendance=Avg("attendance"),
-        avg_study_hours=Avg("study_hours"),
-        avg_previous_marks=Avg("previous_marks"),
-        avg_assignment_score=Avg("assignment_score"),
-        avg_test_score=Avg("test_score"),
+
+        average_prediction=Avg(
+            "predicted_score"
+        ),
+
+        average_attendance=Avg(
+            "attendance"
+        ),
+
+        average_study_hours=Avg(
+            "study_hours"
+        ),
+
+        average_previous_marks=Avg(
+            "previous_marks"
+        ),
+
+        average_assignment=Avg(
+            "assignment_score"
+        ),
+
+        average_test_score=Avg(
+            "test_score"
+        ),
     )
 
-    categories = Prediction.objects.values(
+
+    # =====================================================
+    # PERFORMANCE CATEGORY COUNTS
+    # =====================================================
+
+    category_counts = Prediction.objects.values(
         "performance_category"
     ).annotate(
         total=Count("id")
@@ -894,19 +926,47 @@ def admin_analytics(request):
         "-total"
     )
 
+
+    # =====================================================
+    # ALL PREDICTION DATA
+    # =====================================================
+
+    predictions = Prediction.objects.select_related(
+        "student"
+    ).order_by(
+        "-created_at"
+    )
+
+
+    # =====================================================
+    # CONTEXT
+    # =====================================================
+
     context = {
-        "total_students": total_students,
-        "total_predictions": total_predictions,
-        "averages": averages,
-        "categories": categories,
+
+        "total_students":
+            total_students,
+
+        "total_predictions":
+            total_predictions,
+
+        "averages":
+            averages,
+
+        "category_counts":
+            category_counts,
+
+        "predictions":
+            predictions,
+
     }
+
 
     return render(
         request,
         "admin_analytics.html",
         context
     )
-
 
 # =========================================================
 # ADMIN ML MODEL
